@@ -18,13 +18,10 @@ const CARD2 = "#181b24";
 const TEXT = "#ffffff";
 const MUTED = "#9da3b4";
 const GREEN = "#45d483";
+const RED = "#ff6b7a";
 const BORDER = "#292d39";
 
 const IDEAS = [
-  // =========================
-  // $0 STARTUP BUSINESSES
-  // =========================
-
   {
     title: "Gaming Clip Package",
     category: "Gaming",
@@ -40,7 +37,6 @@ const IDEAS = [
     source: "TikTok, YouTube, Discord, gaming communities",
     skills: ["gaming", "editing", "content", "social media"],
   },
-
   {
     title: "Social Media Caption Service",
     category: "Content",
@@ -56,7 +52,6 @@ const IDEAS = [
     source: "Facebook, Instagram, local business groups",
     skills: ["writing", "social media", "marketing"],
   },
-
   {
     title: "Local Business Lead Finder",
     category: "Marketing",
@@ -72,7 +67,6 @@ const IDEAS = [
     source: "Google, Facebook, local directories",
     skills: ["research", "organization", "sales"],
   },
-
   {
     title: "Facebook Marketplace Listing Service",
     category: "Sales",
@@ -88,7 +82,6 @@ const IDEAS = [
     source: "Facebook Marketplace, local groups",
     skills: ["writing", "sales", "research"],
   },
-
   {
     title: "Resume Rewrite Service",
     category: "Career",
@@ -104,7 +97,6 @@ const IDEAS = [
     source: "Facebook, LinkedIn, local groups",
     skills: ["writing", "editing", "career"],
   },
-
   {
     title: "Job Application Helper",
     category: "Career",
@@ -120,7 +112,6 @@ const IDEAS = [
     source: "Facebook groups, local communities",
     skills: ["writing", "organization", "research"],
   },
-
   {
     title: "Research Assistant Service",
     category: "Research",
@@ -136,7 +127,6 @@ const IDEAS = [
     source: "Facebook, creator communities, freelance groups",
     skills: ["research", "writing", "organization"],
   },
-
   {
     title: "Product Description Writer",
     category: "Writing",
@@ -152,7 +142,6 @@ const IDEAS = [
     source: "Facebook, Etsy communities, seller groups",
     skills: ["writing", "sales", "marketing"],
   },
-
   {
     title: "Marketplace Flipping Research",
     category: "Reselling",
@@ -168,7 +157,6 @@ const IDEAS = [
     source: "Facebook Marketplace, local groups",
     skills: ["research", "pricing", "reselling"],
   },
-
   {
     title: "Personal Errand Finder",
     category: "Service",
@@ -184,7 +172,6 @@ const IDEAS = [
     source: "Facebook, local communities",
     skills: ["research", "organization", "communication"],
   },
-
   {
     title: "Digital Organization Service",
     category: "Organization",
@@ -200,7 +187,6 @@ const IDEAS = [
     source: "Facebook, local groups, referrals",
     skills: ["organization", "technology"],
   },
-
   {
     title: "AI Prompt Creation Service",
     category: "AI",
@@ -216,11 +202,6 @@ const IDEAS = [
     source: "Facebook, Discord, creator communities",
     skills: ["AI", "writing", "research"],
   },
-
-  // =========================
-  // OTHER LOW-COST BUSINESSES
-  // =========================
-
   {
     title: "Gaming Thumbnail Service",
     category: "Gaming",
@@ -236,7 +217,6 @@ const IDEAS = [
     source: "YouTube, TikTok, Discord, creator communities",
     skills: ["gaming", "design", "YouTube", "editing"],
   },
-
   {
     title: "Short-Form Content Pack",
     category: "Content",
@@ -252,7 +232,6 @@ const IDEAS = [
     source: "TikTok, Instagram, Facebook",
     skills: ["writing", "content", "social media"],
   },
-
   {
     title: "Social Media Starter Pack",
     category: "Marketing",
@@ -268,7 +247,6 @@ const IDEAS = [
     source: "Facebook, Instagram, local business groups",
     skills: ["marketing", "writing", "social media"],
   },
-
   {
     title: "Local Business Flyer Pack",
     category: "Design",
@@ -284,7 +262,6 @@ const IDEAS = [
     source: "Facebook, local groups, direct outreach",
     skills: ["design", "marketing"],
   },
-
   {
     title: "Restaurant Social Pack",
     category: "Food",
@@ -300,7 +277,6 @@ const IDEAS = [
     source: "Facebook, Instagram, local food groups",
     skills: ["food", "design", "marketing"],
   },
-
   {
     title: "Real Estate Content Pack",
     category: "Real Estate",
@@ -316,7 +292,6 @@ const IDEAS = [
     source: "Facebook, Instagram, realtor groups",
     skills: ["real estate", "content", "marketing"],
   },
-
   {
     title: "Small Business Logo Kit",
     category: "Design",
@@ -332,7 +307,6 @@ const IDEAS = [
     source: "Facebook, local groups, Instagram",
     skills: ["design", "branding"],
   },
-
   {
     title: "Digital Menu Design",
     category: "Food",
@@ -348,7 +322,6 @@ const IDEAS = [
     source: "Local Facebook groups and direct outreach",
     skills: ["design", "food"],
   },
-
   {
     title: "Pet Business Content Pack",
     category: "Pets",
@@ -364,7 +337,6 @@ const IDEAS = [
     source: "Facebook, Instagram, local groups",
     skills: ["pets", "content", "social media"],
   },
-
   {
     title: "Auto Dealer Social Pack",
     category: "Automotive",
@@ -419,15 +391,34 @@ function DetailRow({ label, value }) {
   );
 }
 
-function Step({ number, text }) {
+function Step({ number, text, completed = false, onPress }) {
   return (
-    <View style={styles.step}>
-      <View style={styles.stepNumber}>
-        <Text style={styles.stepNumberText}>{number}</Text>
+    <TouchableOpacity
+      style={styles.step}
+      onPress={onPress}
+      disabled={!onPress}
+      activeOpacity={0.8}
+    >
+      <View
+        style={[
+          styles.stepNumber,
+          completed && styles.stepNumberComplete,
+        ]}
+      >
+        <Text style={styles.stepNumberText}>
+          {completed ? "✓" : number}
+        </Text>
       </View>
 
-      <Text style={styles.stepText}>{text}</Text>
-    </View>
+      <Text
+        style={[
+          styles.stepText,
+          completed && styles.stepTextComplete,
+        ]}
+      >
+        {text}
+      </Text>
+    </TouchableOpacity>
   );
 }
 
@@ -458,6 +449,16 @@ export default function App() {
   const [goal, setGoal] = useState("1500");
   const [category, setCategory] = useState("All");
 
+  // Launch dashboard data
+  const [prospects, setProspects] = useState(
+    Array.from({ length: 10 }, (_, index) => ({
+      id: index + 1,
+      name: "",
+      contacted: false,
+      sold: false,
+    }))
+  );
+
   const categories = [
     "All",
     "🔥 $0 STARTUP",
@@ -470,7 +471,8 @@ export default function App() {
         `${idea.title} ${idea.category} ${idea.customer} ${idea.product}`.toLowerCase();
 
       const matchesSearch =
-        !search || searchText.includes(search.toLowerCase());
+        !search ||
+        searchText.includes(search.toLowerCase());
 
       const matchesCategory =
         category === "All"
@@ -482,52 +484,156 @@ export default function App() {
       const matchesBudget =
         Number(budget || 0) >= idea.startup;
 
-      return matchesSearch && matchesCategory && matchesBudget;
+      return (
+        matchesSearch &&
+        matchesCategory &&
+        matchesBudget
+      );
     });
   }, [search, category, budget]);
 
   const monthlySales = selectedIdea
-    ? Math.ceil(Number(goal || 1500) / selectedIdea.price)
+    ? Math.ceil(
+        Number(goal || 1500) / selectedIdea.price
+      )
     : 0;
 
   const projectedRevenue = selectedIdea
     ? monthlySales * selectedIdea.price
     : 0;
 
+  const contactedCount = prospects.filter(
+    (p) => p.contacted
+  ).length;
+
+  const soldCount = prospects.filter(
+    (p) => p.sold
+  ).length;
+
+  const actualRevenue = selectedIdea
+    ? soldCount * selectedIdea.price
+    : 0;
+
+  const revenueProgress =
+    Number(goal || 1500) > 0
+      ? Math.min(
+          actualRevenue / Number(goal || 1500),
+          1
+        )
+      : 0;
+
+  const outreachProgress =
+    contactedCount / 10;
+
   function forge(idea) {
     setSelectedIdea(idea);
     setScreen("forge");
   }
 
+  function startBusiness() {
+    if (!selectedIdea) return;
+
+    setScreen("launch");
+  }
+
   function toggleSaved(idea) {
-    const exists = saved.some((x) => x.title === idea.title);
+    const exists = saved.some(
+      (x) => x.title === idea.title
+    );
 
     if (exists) {
-      setSaved(saved.filter((x) => x.title !== idea.title));
+      setSaved(
+        saved.filter(
+          (x) => x.title !== idea.title
+        )
+      );
     } else {
       setSaved([...saved, idea]);
     }
   }
 
-  // =========================
-  // START BUSINESS
-  // =========================
-
-  function startBusiness() {
-    if (!selectedIdea) {
-      Alert.alert(
-        "Choose a Business",
-        "Select a business idea before launching."
-      );
-      return;
-    }
-
-    setScreen("launch");
+  function updateProspectName(id, name) {
+    setProspects((current) =>
+      current.map((prospect) =>
+        prospect.id === id
+          ? { ...prospect, name }
+          : prospect
+      )
+    );
   }
 
-  // =========================
-  // IDEAS SCREEN
-  // =========================
+  function toggleContacted(id) {
+    setProspects((current) =>
+      current.map((prospect) =>
+        prospect.id === id
+          ? {
+              ...prospect,
+              contacted: !prospect.contacted,
+            }
+          : prospect
+      )
+    );
+  }
+
+  function toggleSold(id) {
+    setProspects((current) =>
+      current.map((prospect) =>
+        prospect.id === id
+          ? {
+              ...prospect,
+              sold: !prospect.sold,
+              contacted: true,
+            }
+          : prospect
+      )
+    );
+  }
+
+  function showPitch() {
+    if (!selectedIdea) return;
+
+    const pitch =
+      `I help ${selectedIdea.customer.toLowerCase()} ` +
+      `who need ${selectedIdea.category.toLowerCase()} help. ` +
+      `I create ${selectedIdea.product.toLowerCase()} ` +
+      `for ${money(selectedIdea.price)}. ` +
+      `Would you like to see an example?`;
+
+    Alert.alert(
+      "YOUR SALES PITCH",
+      pitch,
+      [{ text: "OK" }]
+    );
+  }
+
+  function resetProspects() {
+    Alert.alert(
+      "Reset Outreach?",
+      "This will clear your 10 prospects and sales progress.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Reset",
+          style: "destructive",
+          onPress: () =>
+            setProspects(
+              Array.from(
+                { length: 10 },
+                (_, index) => ({
+                  id: index + 1,
+                  name: "",
+                  contacted: false,
+                  sold: false,
+                })
+              )
+            ),
+        },
+      ]
+    );
+  }
 
   function renderIdeas() {
     return (
@@ -537,15 +643,18 @@ export default function App() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.hero}>
-          <Text style={styles.eyebrow}>⚒ FORGED BUSINESS</Text>
+          <Text style={styles.eyebrow}>
+            ⚒ FORGED BUSINESS
+          </Text>
 
           <Text style={styles.heroTitle}>
             Build a business from what you have.
           </Text>
 
           <Text style={styles.heroText}>
-            Find businesses you can start with little or no money and turn
-            your available skills into income.
+            Find businesses you can start with little
+            or no money and turn your available skills
+            into income.
           </Text>
         </View>
 
@@ -582,7 +691,8 @@ export default function App() {
           />
 
           <Text style={styles.budgetNote}>
-            Set this to $0 to see businesses requiring no startup money.
+            Set this to $0 to see businesses requiring
+            no startup money.
           </Text>
         </Card>
 
@@ -644,11 +754,14 @@ export default function App() {
               </View>
 
               <TouchableOpacity
-                onPress={() => toggleSaved(idea)}
+                onPress={() =>
+                  toggleSaved(idea)
+                }
               >
                 <Text style={styles.star}>
                   {saved.some(
-                    (x) => x.title === idea.title
+                    (x) =>
+                      x.title === idea.title
                   )
                     ? "★"
                     : "☆"}
@@ -719,10 +832,6 @@ export default function App() {
     );
   }
 
-  // =========================
-  // FORGED BUSINESS SCREEN
-  // =========================
-
   function renderForge() {
     if (!selectedIdea) {
       return renderIdeas();
@@ -741,7 +850,121 @@ export default function App() {
           onPress={() => setScreen("ideas")}
         >
           <Text style={styles.backText}>
-            ‹ BACK TO IDEAS
+            ‹ BACK TO BUSINESS
+          </Text>
+        </TouchableOpacity>
+
+        <Text style={styles.eyebrow}>
+          🚀 BUSINESS LAUNCH
+        </Text>
+
+        <Text style={styles.forgeTitle}>
+          {idea.title}
+        </Text>
+
+        <Text style={styles.heroText}>
+          Your business is ready to launch. Follow
+          the plan below to turn the idea into your
+          first customer.
+        </Text>
+
+        <Card style={styles.readyCard}>
+          <Text style={styles.readyIcon}>
+            🚀
+          </Text>
+
+          <Text style={styles.readyTitle}>
+            YOU'RE READY TO START
+          </Text>
+
+          <Text style={styles.readyText}>
+            Start small. Create the offer. Find your
+            first customer. Deliver the result. Then
+            repeat.
+          </Text>
+        </Card>
+
+        <SectionTitle icon="🎯">
+          YOUR FIRST CUSTOMER
+        </SectionTitle>
+
+        <Card>
+          <Step
+            number="1"
+            text={`Create one sample of your ${idea.product.toLowerCase()}`}
+          />
+
+          <Step
+            number="2"
+            text={`Create your offer at ${money(
+              idea.price
+            )}.`}
+          />
+
+          <Step
+            number="3"
+            text={`Find potential customers through ${idea.source}.`}
+          />
+
+          <Step
+            number="4"
+            text="Contact your first 10 potential customers."
+          />
+
+          <Step
+            number="5"
+            text="Ask directly for the first sale."
+          />
+        </Card>
+
+        <ActionButton
+          title="🚀 START TODAY"
+          onPress={startBusiness}
+        />
+
+        <ActionButton
+          title="📋 VIEW FULL BUSINESS PLAN"
+          secondary
+          onPress={() => setScreen("fullplan")}
+        />
+
+        <ActionButton
+          title={
+            saved.some(
+              (x) =>
+                x.title === idea.title
+            )
+              ? "★ REMOVE FROM SAVED"
+              : "☆ SAVE THIS BUSINESS"
+          }
+          secondary
+          onPress={() =>
+            toggleSaved(idea)
+          }
+        />
+      </ScrollView>
+    );
+  }
+
+  function renderFullPlan() {
+    if (!selectedIdea) {
+      return renderIdeas();
+    }
+
+    const idea = selectedIdea;
+
+    return (
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => setScreen("forge")}
+        >
+          <Text style={styles.backText}>
+            ‹ BACK TO LAUNCH
           </Text>
         </TouchableOpacity>
 
@@ -754,9 +977,8 @@ export default function App() {
         </Text>
 
         <Text style={styles.heroText}>
-          A complete business plan built around your
-          available money, skills, customer, and income
-          goal.
+          Complete business plan for launching this
+          offer and building it into recurring income.
         </Text>
 
         <Card>
@@ -846,7 +1068,8 @@ export default function App() {
           </Text>
 
           <Text style={styles.goalSub}>
-            {money(projectedRevenue)} projected revenue
+            {money(projectedRevenue)}
+            {" "}projected revenue
           </Text>
         </Card>
 
@@ -975,13 +1198,19 @@ export default function App() {
 
         <Card style={styles.pitchCard}>
           <Text style={styles.pitch}>
-            "I help {idea.customer.toLowerCase()} who
-            need {idea.category.toLowerCase()} help. I
-            create {idea.product.toLowerCase()} for{" "}
-            {money(idea.price)}. Would you like to see an
-            example?"
+            "I help{" "}
+            {idea.customer.toLowerCase()} who need{" "}
+            {idea.category.toLowerCase()} help. I create{" "}
+            {idea.product.toLowerCase()} for{" "}
+            {money(idea.price)}. Would you like to see
+            an example?"
           </Text>
         </Card>
+
+        <ActionButton
+          title="📣 SHOW SALES PITCH"
+          onPress={showPitch}
+        />
 
         <SectionTitle icon="📍">
           CUSTOMER SOURCES
@@ -1014,25 +1243,9 @@ export default function App() {
           title="🚀 START THIS BUSINESS"
           onPress={startBusiness}
         />
-
-        <ActionButton
-          title={
-            saved.some(
-              (x) => x.title === idea.title
-            )
-              ? "★ REMOVE FROM SAVED"
-              : "☆ SAVE THIS BUSINESS"
-          }
-          secondary
-          onPress={() => toggleSaved(idea)}
-        />
       </ScrollView>
     );
   }
-
-  // =========================
-  // NEW BUSINESS LAUNCH SCREEN
-  // =========================
 
   function renderLaunch() {
     if (!selectedIdea) {
@@ -1052,7 +1265,7 @@ export default function App() {
           onPress={() => setScreen("forge")}
         >
           <Text style={styles.backText}>
-            ‹ BACK TO BUSINESS
+            ‹ BUSINESS PLAN
           </Text>
         </TouchableOpacity>
 
@@ -1060,329 +1273,330 @@ export default function App() {
           🚀 BUSINESS LAUNCH
         </Text>
 
-        <Text style={styles.forgeTitle}>
+        <Text style={styles.launchTitle}>
           {idea.title}
         </Text>
 
         <Text style={styles.heroText}>
-          Your business is ready to launch. Follow the
-          plan below to turn the idea into your first
-          customer.
+          This is your action center. Don't just read
+          the plan — use it to get customers.
         </Text>
 
-        <Card style={styles.launchHero}>
-          <Text style={styles.launchIcon}>
-            🚀
-          </Text>
-
-          <Text style={styles.launchTitle}>
-            YOU'RE READY TO START
-          </Text>
-
-          <Text style={styles.launchText}>
-            Start small. Create the offer. Find your
-            first customer. Deliver the result. Then
-            repeat.
-          </Text>
-        </Card>
-
+        {/* GOAL */}
         <SectionTitle icon="🎯">
-          YOUR FIRST CUSTOMER
+          YOUR MONTHLY GOAL
         </SectionTitle>
 
-        <Card>
-          <Step
-            number="1"
-            text={`Create one sample of your ${idea.product.toLowerCase()}`}
-          />
-
-          <Step
-            number="2"
-            text={`Create your offer at ${money(
-              idea.price
-            )}.`}
-          />
-
-          <Step
-            number="3"
-            text={`Find potential customers through ${idea.source}.`}
-          />
-
-          <Step
-            number="4"
-            text="Show the customer your sample."
-          />
-
-          <Step
-            number="5"
-            text="Explain exactly what they receive."
-          />
-
-          <Step
-            number="6"
-            text="Ask directly for the sale."
-          />
-        </Card>
-
-        <SectionTitle icon="💵">
-          YOUR FIRST TARGET
-        </SectionTitle>
-
-        <Card>
-          <Text style={styles.targetLabel}>
-            FIRST CUSTOMER
-          </Text>
-
+        <Card style={styles.goalCard}>
           <Text style={styles.goalNumber}>
-            {money(idea.price)}
+            {money(goal)}
           </Text>
 
-          <Text style={styles.muted}>
-            One customer gets the business moving.
+          <Text style={styles.goalSub}>
+            Target: {monthlySales} sales/month
           </Text>
 
-          <View style={styles.divider} />
+          <View style={styles.progressTrack}>
+            <View
+              style={[
+                styles.progressFill,
+                {
+                  width: `${
+                    Math.min(
+                      soldCount /
+                        Math.max(
+                          monthlySales,
+                          1
+                        ),
+                      1
+                    ) * 100
+                  }%`,
+                },
+              ]}
+            />
+          </View>
 
-          <DetailRow
-            label="Monthly goal"
-            value={money(goal)}
-          />
-
-          <DetailRow
-            label="Price per sale"
-            value={money(idea.price)}
-          />
-
-          <DetailRow
-            label="Sales needed"
-            value={`${monthlySales}/month`}
-          />
-
-          <DetailRow
-            label="Projected revenue"
-            value={money(projectedRevenue)}
-          />
+          <Text style={styles.progressText}>
+            {soldCount} / {monthlySales} customers
+          </Text>
         </Card>
 
+        {/* REVENUE */}
+        <SectionTitle icon="💰">
+          REVENUE
+        </SectionTitle>
+
+        <Card>
+          <View style={styles.statsGrid}>
+            <View style={styles.statBox}>
+              <Text style={styles.statNumber}>
+                {money(actualRevenue)}
+              </Text>
+
+              <Text style={styles.statLabel}>
+                EARNED
+              </Text>
+            </View>
+
+            <View style={styles.statBox}>
+              <Text style={styles.statNumber}>
+                {soldCount}
+              </Text>
+
+              <Text style={styles.statLabel}>
+                CUSTOMERS
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.progressTrack}>
+            <View
+              style={[
+                styles.progressFill,
+                {
+                  width: `${
+                    revenueProgress * 100
+                  }%`,
+                },
+              ]}
+            />
+          </View>
+
+          <Text style={styles.progressText}>
+            {money(actualRevenue)} / {money(goal)}
+          </Text>
+        </Card>
+
+        {/* TODAY */}
+        <SectionTitle icon="📈">
+          TODAY'S MISSION
+        </SectionTitle>
+
+        <Card style={styles.missionCard}>
+          <Text style={styles.missionTitle}>
+            Get your first customer.
+          </Text>
+
+          <Text style={styles.missionText}>
+            Start with 10 potential customers.
+            Contact them, make the offer, and track
+            what happens.
+          </Text>
+
+          <View style={styles.missionStats}>
+            <Text style={styles.missionStat}>
+              {contactedCount}/10 contacted
+            </Text>
+
+            <Text style={styles.missionStat}>
+              {soldCount} sold
+            </Text>
+          </View>
+
+          <View style={styles.progressTrack}>
+            <View
+              style={[
+                styles.progressFill,
+                {
+                  width: `${
+                    outreachProgress * 100
+                  }%`,
+                },
+              ]}
+            />
+          </View>
+        </Card>
+
+        {/* SALES PITCH */}
         <SectionTitle icon="📣">
-          SALES MESSAGE
+          YOUR SALES PITCH
         </SectionTitle>
 
         <Card style={styles.pitchCard}>
           <Text style={styles.pitch}>
-            "I help {idea.customer.toLowerCase()} with{" "}
-            {idea.category.toLowerCase()}. I provide{" "}
+            "I help{" "}
+            {idea.customer.toLowerCase()} who need{" "}
+            {idea.category.toLowerCase()} help. I create{" "}
             {idea.product.toLowerCase()} for{" "}
-            {money(idea.price)}. Would you like to see an
-            example?"
+            {money(idea.price)}. Would you like to see
+            an example?"
           </Text>
-        </Card>
 
-        <SectionTitle icon="📋">
-          LAUNCH CHECKLIST
-        </SectionTitle>
-
-        <Card>
-          <Step
-            number="1"
-            text="Finish your sample."
-          />
-
-          <Step
-            number="2"
-            text="Take screenshots or create examples of your work."
-          />
-
-          <Step
-            number="3"
-            text="Create your sales post."
-          />
-
-          <Step
-            number="4"
-            text="Post it where your customers are."
-          />
-
-          <Step
-            number="5"
-            text="Contact 10 potential customers."
-          />
-
-          <Step
-            number="6"
-            text="Follow up with people who respond."
-          />
-
-          <Step
-            number="7"
-            text="Close your first customer."
+          <ActionButton
+            title="📣 SHOW FULL PITCH"
+            secondary
+            onPress={showPitch}
           />
         </Card>
 
-        <SectionTitle icon="🔥">
-          WHAT YOU SELL
+        {/* PROSPECTS */}
+        <SectionTitle icon="👥">
+          YOUR 10 PROSPECTS
         </SectionTitle>
 
-        <Card>
-          <Text style={styles.cardLabel}>
-            PRODUCT
-          </Text>
+        <Text style={styles.sectionHint}>
+          Add the people or creators you want to
+          contact. Then track each conversation.
+        </Text>
 
-          <Text style={styles.bigCardText}>
-            {idea.product}
-          </Text>
+        {prospects.map((prospect) => (
+          <Card
+            key={prospect.id}
+            style={
+              prospect.sold
+                ? styles.soldCard
+                : prospect.contacted
+                ? styles.contactedCard
+                : null
+            }
+          >
+            <View style={styles.prospectHeader}>
+              <View style={styles.prospectNumber}>
+                <Text style={styles.prospectNumberText}>
+                  {prospect.id}
+                </Text>
+              </View>
 
-          <View style={styles.divider} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.prospectTitle}>
+                  Prospect #{prospect.id}
+                </Text>
 
-          <Text style={styles.cardLabel}>
-            STARTING PRICE
-          </Text>
+                <Text style={styles.prospectStatus}>
+                  {prospect.sold
+                    ? "CUSTOMER"
+                    : prospect.contacted
+                    ? "CONTACTED"
+                    : "NOT CONTACTED"}
+                </Text>
+              </View>
+            </View>
 
-          <Text style={styles.startupBig}>
-            {money(idea.price)}
-          </Text>
-
-          {idea.recurring > 0 && (
-            <>
-              <View style={styles.divider} />
-
-              <Text style={styles.cardLabel}>
-                RECURRING OPTION
-              </Text>
-
-              <Text style={styles.bigCardText}>
-                {money(idea.recurring)}/month
-              </Text>
-            </>
-          )}
-        </Card>
-
-        <SectionTitle icon="🛠">
-          HOW YOU GET PAID
-        </SectionTitle>
-
-        <Card>
-          <Step
-            number="1"
-            text="Customer agrees to your offer."
-          />
-
-          <Step
-            number="2"
-            text="Customer pays for the service."
-          />
-
-          <Step
-            number="3"
-            text="You create and customize the product."
-          />
-
-          <Step
-            number="4"
-            text="You deliver the finished product."
-          />
-
-          <Step
-            number="5"
-            text="Ask for feedback and a testimonial."
-          />
-        </Card>
-
-        <SectionTitle icon="📈">
-          GROW FROM ONE CUSTOMER
-        </SectionTitle>
-
-        <Card>
-          <Step
-            number="1"
-            text="Get your first customer."
-          />
-
-          <Step
-            number="2"
-            text="Deliver excellent work."
-          />
-
-          <Step
-            number="3"
-            text="Ask for a testimonial."
-          />
-
-          <Step
-            number="4"
-            text="Use the result as your next example."
-          />
-
-          <Step
-            number="5"
-            text="Contact more customers."
-          />
-
-          <Step
-            number="6"
-            text="Offer the premium package."
-          />
-
-          {idea.recurring > 0 && (
-            <Step
-              number="7"
-              text={`Move repeat customers to ${money(
-                idea.recurring
-              )}/month.`}
+            <TextInput
+              value={prospect.name}
+              onChangeText={(text) =>
+                updateProspectName(
+                  prospect.id,
+                  text
+                )
+              }
+              placeholder="Creator / customer name"
+              placeholderTextColor={MUTED}
+              style={styles.prospectInput}
             />
-          )}
-        </Card>
 
-        <ActionButton
-          title="🔥 I'M READY — START MY OUTREACH"
-          onPress={() =>
-            Alert.alert(
-              "Start Today",
-              `Your first target is 10 potential customers.\n\nOffer: ${idea.title}\n\nStarting price: ${money(
-                idea.price
-              )}\n\nFind customers through:\n${idea.source}\n\nYour goal: get the first customer.`
-            )
-          }
-        />
+            <View style={styles.prospectButtons}>
+              <TouchableOpacity
+                style={[
+                  styles.smallButton,
+                  prospect.contacted &&
+                    styles.smallButtonActive,
+                ]}
+                onPress={() =>
+                  toggleContacted(
+                    prospect.id
+                  )
+                }
+              >
+                <Text style={styles.smallButtonText}>
+                  {prospect.contacted
+                    ? "✓ CONTACTED"
+                    : "CONTACT"}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.smallButton,
+                  prospect.sold &&
+                    styles.smallButtonSold,
+                ]}
+                onPress={() =>
+                  toggleSold(prospect.id)
+                }
+              >
+                <Text style={styles.smallButtonText}>
+                  {prospect.sold
+                    ? "✓ SOLD"
+                    : "MARK SOLD"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Card>
+        ))}
 
         <ActionButton
           title="📋 VIEW FULL BUSINESS PLAN"
           secondary
-          onPress={() => setScreen("forge")}
+          onPress={() => setScreen("fullplan")}
         />
 
         <ActionButton
-          title={
-            saved.some(
-              (x) => x.title === idea.title
-            )
-              ? "★ REMOVE FROM SAVED"
-              : "☆ SAVE THIS BUSINESS"
-          }
+          title="🔄 RESET OUTREACH"
           secondary
-          onPress={() => toggleSaved(idea)}
+          onPress={resetProspects}
         />
+
+        <Card style={styles.bottomMission}>
+          {soldCount > 0 ? (
+            <>
+              <Text style={styles.bottomMissionTitle}>
+                🔥 YOU MADE A SALE
+              </Text>
+
+              <Text style={styles.bottomMissionText}>
+                You have generated{" "}
+                {money(actualRevenue)} from{" "}
+                {soldCount} customer
+                {soldCount === 1
+                  ? ""
+                  : "s"}.
+                Keep going.
+              </Text>
+            </>
+          ) : contactedCount > 0 ? (
+            <>
+              <Text style={styles.bottomMissionTitle}>
+                ⚡ KEEP GOING
+              </Text>
+
+              <Text style={styles.bottomMissionText}>
+                You've contacted{" "}
+                {contactedCount} of 10 prospects.
+                Finish your first outreach round.
+              </Text>
+            </>
+          ) : (
+            <>
+              <Text style={styles.bottomMissionTitle}>
+                🚀 START TODAY
+              </Text>
+
+              <Text style={styles.bottomMissionText}>
+                Add your first prospect above and
+                make your first offer.
+              </Text>
+            </>
+          )}
+        </Card>
       </ScrollView>
     );
   }
-
-  // =========================
-  // SAVED SCREEN
-  // =========================
 
   function renderSaved() {
     return (
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
       >
         <Text style={styles.screenTitle}>
           Saved Businesses
         </Text>
 
         <Text style={styles.heroText}>
-          Your business ideas are stored here for quick
-          access.
+          Your business ideas are stored here for
+          quick access.
         </Text>
 
         {saved.length === 0 ? (
@@ -1413,11 +1627,7 @@ export default function App() {
 
               <View style={styles.startupBadge}>
                 <Text style={styles.startupBadgeText}>
-                  {idea.startup === 0
-                    ? "✓ $0 STARTUP"
-                    : `${money(
-                        idea.startup
-                      )} STARTUP`}
+                  ✓ $0 STARTUP
                 </Text>
               </View>
 
@@ -1445,18 +1655,20 @@ export default function App() {
     );
   }
 
-  // =========================
-  // TOOLS SCREEN
-  // =========================
-
   function renderTools() {
     return (
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
       >
         <Text style={styles.screenTitle}>
           Tools
+        </Text>
+
+        <Text style={styles.heroText}>
+          Tools to help turn an idea into actual
+          income.
         </Text>
 
         <Card>
@@ -1498,6 +1710,11 @@ export default function App() {
                   projectedRevenue
                 )}
               />
+
+              <DetailRow
+                label="Current revenue"
+                value={money(actualRevenue)}
+              />
             </View>
           ) : (
             <Text
@@ -1509,6 +1726,30 @@ export default function App() {
               Forge a business first to activate the
               calculator.
             </Text>
+          )}
+        </Card>
+
+        <Card>
+          <Text style={styles.toolIcon}>
+            🚀
+          </Text>
+
+          <Text style={styles.toolTitle}>
+            Launch Dashboard
+          </Text>
+
+          <Text style={styles.bigCardText}>
+            Start a business, track prospects, record
+            sales, and watch your revenue grow.
+          </Text>
+
+          {selectedIdea && (
+            <ActionButton
+              title="🚀 OPEN CURRENT BUSINESS"
+              onPress={() =>
+                setScreen("launch")
+              }
+            />
           )}
         </Card>
 
@@ -1583,31 +1824,41 @@ export default function App() {
           </Text>
 
           <Text style={styles.bigCardText}>
-            Problem → Product → Proof → Price → Direct Ask
+            Problem → Product → Proof → Price →
+            Direct Ask
           </Text>
         </Card>
       </ScrollView>
     );
   }
 
-  // =========================
-  // MAIN APP
-  // =========================
-
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="light-content" />
 
       <View style={styles.header}>
-        <View>
-          <Text style={styles.brand}>
-            FORGED
-          </Text>
+        <TouchableOpacity
+          onPress={() => {
+            if (
+              screen === "launch" ||
+              screen === "fullplan" ||
+              screen === "forge"
+            ) {
+              setScreen("ideas");
+            }
+          }}
+          activeOpacity={0.8}
+        >
+          <View>
+            <Text style={styles.brand}>
+              FORGED
+            </Text>
 
-          <Text style={styles.brandSub}>
-            BUSINESS BUILDER
-          </Text>
-        </View>
+            <Text style={styles.brandSub}>
+              BUSINESS BUILDER
+            </Text>
+          </View>
+        </TouchableOpacity>
 
         <View style={styles.headerBadge}>
           <Text style={styles.headerBadgeText}>
@@ -1617,11 +1868,23 @@ export default function App() {
       </View>
 
       <View style={styles.main}>
-        {screen === "ideas" && renderIdeas()}
-        {screen === "forge" && renderForge()}
-        {screen === "launch" && renderLaunch()}
-        {screen === "saved" && renderSaved()}
-        {screen === "tools" && renderTools()}
+        {screen === "ideas" &&
+          renderIdeas()}
+
+        {screen === "forge" &&
+          renderForge()}
+
+        {screen === "fullplan" &&
+          renderFullPlan()}
+
+        {screen === "launch" &&
+          renderLaunch()}
+
+        {screen === "saved" &&
+          renderSaved()}
+
+        {screen === "tools" &&
+          renderTools()}
       </View>
 
       <View style={styles.nav}>
@@ -1631,32 +1894,35 @@ export default function App() {
           active={
             screen === "ideas" ||
             screen === "forge" ||
+            screen === "fullplan" ||
             screen === "launch"
           }
-          onPress={() => setScreen("ideas")}
+          onPress={() =>
+            setScreen("ideas")
+          }
         />
 
         <NavButton
           icon="★"
           label="Saved"
           active={screen === "saved"}
-          onPress={() => setScreen("saved")}
+          onPress={() =>
+            setScreen("saved")
+          }
         />
 
         <NavButton
           icon="⚒"
           label="Tools"
           active={screen === "tools"}
-          onPress={() => setScreen("tools")}
+          onPress={() =>
+            setScreen("tools")
+          }
         />
       </View>
     </SafeAreaView>
   );
 }
-
-// =========================
-// STYLES
-// =========================
 
 const styles = StyleSheet.create({
   safe: {
@@ -1713,7 +1979,7 @@ const styles = StyleSheet.create({
 
   content: {
     padding: 18,
-    paddingBottom: 120,
+    paddingBottom: 130,
   },
 
   hero: {
@@ -1741,6 +2007,14 @@ const styles = StyleSheet.create({
     color: TEXT,
     fontSize: 34,
     lineHeight: 39,
+    fontWeight: "900",
+    marginBottom: 12,
+  },
+
+  launchTitle: {
+    color: TEXT,
+    fontSize: 32,
+    lineHeight: 38,
     fontWeight: "900",
     marginBottom: 12,
   },
@@ -1837,6 +2111,14 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     letterSpacing: 0.5,
     marginTop: 8,
+    marginBottom: 12,
+  },
+
+  sectionHint: {
+    color: MUTED,
+    fontSize: 13,
+    lineHeight: 20,
+    marginTop: -5,
     marginBottom: 12,
   },
 
@@ -1938,6 +2220,7 @@ const styles = StyleSheet.create({
     backgroundColor: PURPLE,
     borderRadius: 14,
     paddingVertical: 15,
+    paddingHorizontal: 14,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 4,
@@ -1955,6 +2238,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "900",
     letterSpacing: 0.5,
+    textAlign: "center",
   },
 
   backButton: {
@@ -1965,6 +2249,33 @@ const styles = StyleSheet.create({
     color: PURPLE,
     fontSize: 13,
     fontWeight: "900",
+  },
+
+  readyCard: {
+    backgroundColor: CARD2,
+    borderColor: PURPLE,
+    alignItems: "center",
+    paddingVertical: 25,
+  },
+
+  readyIcon: {
+    fontSize: 45,
+    marginBottom: 8,
+  },
+
+  readyTitle: {
+    color: TEXT,
+    fontSize: 22,
+    fontWeight: "900",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+
+  readyText: {
+    color: MUTED,
+    fontSize: 15,
+    lineHeight: 23,
+    textAlign: "center",
   },
 
   cardLabel: {
@@ -2000,7 +2311,6 @@ const styles = StyleSheet.create({
     color: TEXT,
     fontSize: 17,
     fontWeight: "900",
-    textAlign: "right",
   },
 
   goalCard: {
@@ -2020,6 +2330,28 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
 
+  progressTrack: {
+    height: 10,
+    backgroundColor: "#0c0e14",
+    borderRadius: 10,
+    overflow: "hidden",
+    marginTop: 15,
+  },
+
+  progressFill: {
+    height: "100%",
+    backgroundColor: PURPLE,
+    borderRadius: 10,
+  },
+
+  progressText: {
+    color: MUTED,
+    fontSize: 12,
+    fontWeight: "800",
+    marginTop: 8,
+    textAlign: "right",
+  },
+
   step: {
     flexDirection: "row",
     alignItems: "flex-start",
@@ -2036,6 +2368,10 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
 
+  stepNumberComplete: {
+    backgroundColor: GREEN,
+  },
+
   stepNumberText: {
     color: TEXT,
     fontSize: 12,
@@ -2047,6 +2383,11 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     lineHeight: 23,
+  },
+
+  stepTextComplete: {
+    color: MUTED,
+    textDecorationLine: "line-through",
   },
 
   pitchCard: {
@@ -2083,6 +2424,174 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 
+  /* LAUNCH DASHBOARD */
+
+  missionCard: {
+    borderColor: PURPLE,
+    backgroundColor: CARD2,
+  },
+
+  missionTitle: {
+    color: TEXT,
+    fontSize: 25,
+    fontWeight: "900",
+    marginBottom: 8,
+  },
+
+  missionText: {
+    color: MUTED,
+    fontSize: 15,
+    lineHeight: 23,
+  },
+
+  missionStats: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 18,
+  },
+
+  missionStat: {
+    color: TEXT,
+    fontSize: 14,
+    fontWeight: "900",
+  },
+
+  statsGrid: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 8,
+  },
+
+  statBox: {
+    flex: 1,
+    backgroundColor: CARD,
+    borderRadius: 14,
+    padding: 15,
+    marginHorizontal: 4,
+  },
+
+  statNumber: {
+    color: TEXT,
+    fontSize: 23,
+    fontWeight: "900",
+    marginBottom: 5,
+  },
+
+  statLabel: {
+    color: MUTED,
+    fontSize: 10,
+    fontWeight: "900",
+    letterSpacing: 1,
+  },
+
+  prospectHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 14,
+  },
+
+  prospectNumber: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: PURPLE,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
+  },
+
+  prospectNumberText: {
+    color: TEXT,
+    fontSize: 14,
+    fontWeight: "900",
+  },
+
+  prospectTitle: {
+    color: TEXT,
+    fontSize: 17,
+    fontWeight: "900",
+  },
+
+  prospectStatus: {
+    color: MUTED,
+    fontSize: 10,
+    fontWeight: "900",
+    letterSpacing: 1,
+    marginTop: 3,
+  },
+
+  prospectInput: {
+    backgroundColor: CARD2,
+    borderWidth: 1,
+    borderColor: BORDER,
+    borderRadius: 12,
+    color: TEXT,
+    fontSize: 15,
+    paddingHorizontal: 13,
+    paddingVertical: 12,
+    marginBottom: 10,
+  },
+
+  prospectButtons: {
+    flexDirection: "row",
+    gap: 8,
+  },
+
+  smallButton: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: BORDER,
+    backgroundColor: CARD2,
+    borderRadius: 11,
+    paddingVertical: 11,
+    alignItems: "center",
+  },
+
+  smallButtonActive: {
+    borderColor: PURPLE,
+    backgroundColor: "#211d3d",
+  },
+
+  smallButtonSold: {
+    borderColor: GREEN,
+    backgroundColor: "#11251b",
+  },
+
+  smallButtonText: {
+    color: TEXT,
+    fontSize: 10,
+    fontWeight: "900",
+  },
+
+  contactedCard: {
+    borderColor: PURPLE,
+  },
+
+  soldCard: {
+    borderColor: GREEN,
+  },
+
+  bottomMission: {
+    borderColor: PURPLE,
+    backgroundColor: CARD2,
+    marginTop: 5,
+  },
+
+  bottomMissionTitle: {
+    color: TEXT,
+    fontSize: 20,
+    fontWeight: "900",
+    marginBottom: 8,
+  },
+
+  bottomMissionText: {
+    color: MUTED,
+    fontSize: 15,
+    lineHeight: 23,
+  },
+
+  /* SAVED */
+
   emptyIcon: {
     color: PURPLE,
     fontSize: 45,
@@ -2102,6 +2611,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 
+  /* TOOLS */
+
   toolIcon: {
     fontSize: 28,
     marginBottom: 10,
@@ -2114,50 +2625,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 
-  // =========================
-  // LAUNCH SCREEN STYLES
-  // =========================
-
-  launchHero: {
-    backgroundColor: CARD2,
-    borderColor: PURPLE,
-    alignItems: "center",
-    paddingVertical: 28,
-  },
-
-  launchIcon: {
-    fontSize: 45,
-    marginBottom: 10,
-  },
-
-  launchTitle: {
-    color: TEXT,
-    fontSize: 22,
-    fontWeight: "900",
-    textAlign: "center",
-    marginBottom: 10,
-  },
-
-  launchText: {
-    color: MUTED,
-    fontSize: 15,
-    lineHeight: 23,
-    textAlign: "center",
-  },
-
-  targetLabel: {
-    color: PURPLE,
-    fontSize: 11,
-    fontWeight: "900",
-    letterSpacing: 1,
-    marginBottom: 5,
-  },
-
-  divider: {
-    height: 1,
-    backgroundColor: BORDER,
-    marginVertical: 15,
-  },
+  /* NAVIGATION */
 
   nav: {
     position: "absolute",
