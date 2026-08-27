@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "idea-forge-v1",
-    "slug": "snack-1d42aae4-4b7e-4b50-af31-354de677702a",
+    "name": "Idea forge",
+    "slug": "idea-forge",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,7 +15,8 @@
     },
 
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.leroyjenkin.ideaforge"
     },
 
     "android": {
@@ -29,6 +30,12 @@
 
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+
+    "extra": {
+      "eas": {
+        "projectId": "234237d9-bb5a-4f4b-b526-1d164978fde5"
+      }
     }
   }
 }
